@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check</title>
+
+    <style>
+        html {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333;
+        }
+        .container {
+            position: relative;
+            width: 300px;
+            height: 50px;
+        }
+        .text {
+            position: absolute;
+            color: #fff;
+            font-size: 24px;
+            top: -60px;
+        }
+        .container input {
+            position: absolute;
+            inset: 2px;
+            z-index: 10;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            background-color: #333;
+            color: #fff;
+        }
+        .container .password-strength {
+            position: absolute;
+            inset: 0;
+            background-color: #1115;
+        }
+        .container .password-strength:nth-child(3) {
+            filter: blur(5px);
+        }
+        .container .password-strength:nth-child(3) {
+            filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="text">Password Strength <span class="text-check">Check</span></p>
+        <input type="password" id="password" placeholder="Enter your password">
+        <div class="password-strength"></div>
+        <div class="password-strength"></div>
+        <div class="password-strength"></div>
+    </div>
+
+    <script>
+        let passwordInput = document.querySelector('#password')
+        let passwordStrengths = document.querySelectorAll('.password-strength')
+        let text = document.querySelector('.text-check')
+
+        passwordInput.addEventListener('input', function(event) {
+            let password = event.target.value;
+            let strength = Math.min(password.length, 12);
+            let degree = strength * 30;
+            let gradientColor = strength <= 4 ? '#ff2c1c' : (strength <= 8 ? '#ff9800' : '#12ff12');
+
+            let strengthText = strength <= 4 ? 'Weak' : (strength <= 8 ? 'Medium' : 'Strong');
+
+            passwordStrengths.forEach(passwordStrength => {
+                passwordStrength.style.background = `conic-gradient(${gradientColor} ${degree}deg, #1115 ${degree}deg)`;
+            })
+
+            text.textContent = strengthText;
+            if (password == '') {
+                text.textContent = 'Check'
+            }
+        })
+
+    </script>
+</body>
+</html>
